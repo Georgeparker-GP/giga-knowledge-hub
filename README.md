@@ -1,57 +1,43 @@
 # Giga Knowledge Hub
 
-A live personal knowledge, project and intelligence workspace built around one operating loop:
+Personal project, knowledge and intelligence workspace built around:
 
 **Discover → Understand → Save → Connect → Act → Create**
 
 ## Live app
-GitHub Pages deployment:
-
 https://Georgeparker-GP.github.io/giga-knowledge-hub/
 
-## Current build — V5.5
-The live static application includes:
+## Current build — V6 Cloud
+The app now combines a local-first PWA with a real Supabase cloud layer:
+
 - Five scopes: Projects, Logistics, Football, Daily Knowledge, Content Studio
-- Responsive desktop/mobile navigation
-- Global search
-- Interactive SVG knowledge graph with zoom/focus
-- Cards + detail panel
-- Cross-object relationships
-- Favorites + recently opened
-- Personal notes
-- Tasks Kanban: To Do → In Progress → Done
-- Calendar with task due dates and events
-- File/reference metadata links
-- Source manager with reliability tiers
-- Add / Edit / Delete / Link items
-- Send-to-Content-Studio workflow
+- Global search and connected SVG knowledge graph
+- Favorites, notes, tasks, calendar and sources
+- Today / public intelligence surface
+- Supabase email/password authentication
+- Cross-device workspace synchronization
+- Postgres persistence with Row Level Security
+- Private user-isolated `gkh-files` Storage bucket
+- Private file upload/open/delete UI
+- Local JSON backup/import remains available
 - Georgian / English UI foundation
-- JSON export / import / local reset
-- PWA/offline cache
 - Automatic GitHub Pages deployment from `main`
+- Calendar local-date handling suitable for Georgia timezone
 
-## Important data boundary
-V5.5 stores personal workspace changes in the browser using `localStorage`. This means edits are not yet synchronized between phone and desktop.
+## Cloud data model
+Supabase tables:
+`profiles`, `objects`, `edges`, `notes`, `tasks`, `events`, `sources`, `files`, `news_items`, `sync_state`.
 
-The repository is public. **Never commit passwords, API keys, tokens, private work files, confidential operational data or personal secrets.** `.env` files are ignored and future server-side secrets must stay in GitHub/Vercel/Supabase secret stores.
+Workspace rows are protected with RLS. Private Storage paths begin with the authenticated user ID. The browser contains only the Supabase **publishable** key; no service-role key or server secret is committed.
 
-## Production backend blueprint
-The next architecture phase is prepared for:
-- Supabase Postgres
-- Supabase Auth
-- Private Supabase Storage
-- Row Level Security
-- Live logistics and football ingestion
-- Story clustering and verification
-- Priority scoring
-- Server-side AI actions
-- Multi-device sync
+## Sync behavior
+The application remains local-first. Before sign-in, it works from browser storage. After sign-in, V6 can upload the local workspace, pull the cloud workspace and sync between devices. Existing local JSON export remains an independent backup path.
 
-See:
-- `docs/architecture.md`
-- `docs/roadmap.md`
-- `backend/supabase_schema.sql`
-- `backend/news_pipeline_pseudocode.py`
+## Security boundary
+This repository is public. Never commit passwords, service-role keys, OpenAI/API secrets, private work files, confidential operational data, or personal secrets. Server-side secrets belong in Supabase/hosting secret stores only.
+
+## Still server-side / future intelligence work
+Live source ingestion, scheduled jobs, story clustering, verification, priority scoring and AI generation require server-side functions and source/API configuration. They must not expose privileged keys in this static frontend.
 
 ## Run locally
 ```bash
