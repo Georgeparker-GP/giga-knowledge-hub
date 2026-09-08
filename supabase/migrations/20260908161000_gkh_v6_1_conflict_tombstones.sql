@@ -1,0 +1,11 @@
+-- V6.1 conflict identities + deletion tombstones
+create table if not exists public.tombstones (id uuid primary key default gen_random_uuid(),user_id uuid not null references auth.users(id) on delete cascade,entity_type text not null check(entity_type in('object','note','task','event','source','edge')),client_id text not null,deleted_at timestamptz not null default now(),created_at timestamptz not null default now(),unique(user_id,entity_type,client_id));
+alter table public.tombstones enable row level security;
+revoke all on table public.tombstones from anon,authenticated;grant select,insert,update,delete on table public.tombstones to authenticated;
+create policy tombstones_select_own on public.tombstones for select to authenticated using((select auth.uid())=user_id);
+create policy tombstones_insert_own on public.tombstones for insert to authenticated with check((select auth.uid())=user_id);
+create policy tombstones_update_own on public.tombstones for update to authenticated using((select auth.uid())=user_id) with check((select auth.uid())=user_id);
+create policy tombstones_delete_own on public.tombstones for delete to authenticated using((select auth.uid())=user_id);
+create index if not exists tombstones_user_deleted_idx on public.tombstones(user_id,deleted_at desc);
+alter table public.notes add column if not exists client_id text;alter table public.tasks add column if not exists client_id text;alter table public.events add column if not exists client_id text;alter table public.sources add column if not exists client_id text;alter table public.edges add column if not exists client_id text;alter table public.edges add column if not exists updated_at timestamptz not null default now();
+create unique index if not exists notes_user_client_uidx on public.notes(user_id,client_id) where client_id is not null;create unique index if not exists tasks_user_client_uidx on public.tasks(user_id,client_id) where client_id is not null;create unique index if not exists events_user_client_uidx on public.events(user_id,client_id) where client_id is not null;create unique index if not exists sources_user_client_uidx on public.sources(user_id,client_id) where client_id is not null;create unique index if not exists edges_user_client_uidx on public.edges(user_id,client_id) where client_id is not null;
