@@ -1,0 +1,9 @@
+{
+  "name": "Giga Knowledge Hub",
+  "short_name": "Knowledge Hub",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
+  "icons": []
+}
