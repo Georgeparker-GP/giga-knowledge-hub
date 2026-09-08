@@ -1,9 +1,15 @@
 {
+  "id": "./",
   "name": "Giga Knowledge Hub",
-  "short_name": "Knowledge Hub",
+  "short_name": "Giga Hub",
+  "description": "Personal projects, knowledge, intelligence and content workspace.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#070b12",
-  "theme_color": "#070b12",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#060a10",
+  "theme_color": "#060a10",
+  "categories": ["productivity", "education", "business"],
   "icons": []
 }
